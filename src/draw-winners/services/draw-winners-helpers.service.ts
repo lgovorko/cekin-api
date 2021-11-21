@@ -3,65 +3,57 @@ import { UserDrawQualification } from '../../user-draw-qualifications/entities/u
 
 @Injectable()
 export class DrawWinnerHelperService {
-  public selectRandomUser(
-    userDrawQualifications: UserDrawQualification[],
-  ): {
-    userDrawQualificationId: number;
-    userId: number;
-    dailyDrawId: number;
-  } {
-    const userDrawQualificationsDrawId: {
-      userDrawQualificationId: number;
-      userId: number;
-      dailyDrawId: number;
-    }[] = this.calculateUserDailyDrawQualifications(userDrawQualifications);
+	public selectRandomUser(
+		userDrawQualifications: UserDrawQualification[]
+	): {
+		userDrawQualificationId: number;
+		userId: number;
+		dailyDrawId: number;
+	} {
+		const userDrawQualificationsDrawId: {
+			userDrawQualificationId: number;
+			userId: number;
+			dailyDrawId: number;
+		}[] = this.calculateUserDailyDrawQualifications(userDrawQualifications);
 
-    const winner = userDrawQualificationsDrawId.find(
-      current => current.userId === 16938,
-    );
+		return userDrawQualificationsDrawId[
+			Math.floor(Math.random() * userDrawQualificationsDrawId.length)
+		];
+	}
 
-    if (winner) {
-      return winner;
-    }
+	private calculateUserDailyDrawQualifications(
+		userDrawQualifications: UserDrawQualification[]
+	): {
+		userDrawQualificationId: number;
+		userId: number;
+		dailyDrawId: number;
+	}[] {
+		const userQualifications: {
+			userDrawQualificationId: number;
+			userId: number;
+			dailyDrawId: number;
+		}[] = [];
 
-    return userDrawQualificationsDrawId[
-      Math.floor(Math.random() * userDrawQualificationsDrawId.length)
-    ];
-  }
+		for (let i = 0, len = userDrawQualifications.length; i < len; i++) {
+			const sessionQualifications = [];
+			const {
+				userId,
+				qualificationsCount,
+				id: userDrawQualificationId,
+				dailyDrawId,
+			} = userDrawQualifications[i];
 
-  private calculateUserDailyDrawQualifications(
-    userDrawQualifications: UserDrawQualification[],
-  ): {
-    userDrawQualificationId: number;
-    userId: number;
-    dailyDrawId: number;
-  }[] {
-    const userQualifications: {
-      userDrawQualificationId: number;
-      userId: number;
-      dailyDrawId: number;
-    }[] = [];
+			for (let s = 0; s < qualificationsCount; s++) {
+				sessionQualifications.push({
+					userId,
+					userDrawQualificationId,
+					dailyDrawId,
+				});
+			}
 
-    for (let i = 0, len = userDrawQualifications.length; i < len; i++) {
-      const sessionQualifications = [];
-      const {
-        userId,
-        qualificationsCount,
-        id: userDrawQualificationId,
-        dailyDrawId,
-      } = userDrawQualifications[i];
+			userQualifications.push(...sessionQualifications);
+		}
 
-      for (let s = 0; s < qualificationsCount; s++) {
-        sessionQualifications.push({
-          userId,
-          userDrawQualificationId,
-          dailyDrawId,
-        });
-      }
-
-      userQualifications.push(...sessionQualifications);
-    }
-
-    return userQualifications;
-  }
+		return userQualifications;
+	}
 }

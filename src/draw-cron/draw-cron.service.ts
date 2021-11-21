@@ -9,7 +9,7 @@ import { CronJob } from 'cron';
 import { times } from 'lodash';
 
 import { DailyDraw } from '../daily-draws/entities/daily-draws.entity';
-import { getRepository, getConnection } from 'typeorm';
+import { getRepository, getConnection, MoreThan } from 'typeorm';
 import { UserDrawQualification } from '../user-draw-qualifications/entities/user-draw-qualifications.entity';
 import { DailyDrawStatusE } from '../daily-draws/enum';
 import { errorMessage } from '../shared/error-messages/error-messages';
@@ -180,6 +180,107 @@ export class DrawCronService {
 			const userDrawQualifications: UserDrawQualification[] = await getRepository(
 				UserDrawQualification
 			).find({ where: { dailyDrawId: id } });
+
+			if (userDrawQualifications.length === 0) {
+				return getRepository(DailyDraw).save({
+					...todayDraw,
+					status: DailyDrawStatusE.FINISHED_WITHOUT_WINNERS,
+				});
+			}
+
+			const winner: {
+				userDrawQualificationId: number;
+				userId: number;
+				dailyDrawId: number;
+			} = this.drawWinnerHelperService.selectRandomUser(
+				userDrawQualifications
+			);
+
+			const { userDrawQualificationId, userId, dailyDrawId } = winner;
+			console.log(winner, 'winner');
+
+			return getConnection().transaction(async trx => {
+				const prize: Prize = await trx.findOne(Prize, prizeId);
+
+				const { totalCount, totalSpent } = prize;
+
+				if (totalSpent > totalCount)
+					throw new BadRequestException(errorMessage.prizeSpent);
+
+				const incrementedSpentCount = this.prizeHelperService.incrementPrizeSpentCount(
+					totalSpent
+				);
+
+				await trx.save(Prize, {
+					...prize,
+					totalSpent: incrementedSpentCount,
+				});
+
+				await trx.save(DailyDraw, {
+					...todayDraw,
+					status: DailyDrawStatusE.FINISHED,
+				});
+
+				const newDrawWinner = (await trx.save(DrawWinner, {
+					userId,
+					userDrawQualificationId,
+					prizeId,
+					dailyDrawId,
+				})) as DrawWinner;
+
+				this.loggerService.log({
+					userId: 0,
+					url: 'DAILY DRAW START LOG',
+				});
+
+				return newDrawWinner;
+			});
+		} catch (error) {
+			this.loggerService.error({
+				message: error,
+				userId: 0,
+				url: 'DAILY DRAW LOG',
+			});
+		}
+	}
+
+	@Cron('0 03 * * MON', {
+		name: 'dailyDraw',
+	})
+	async weeklyDraw() {
+		try {
+			const today = moment().format('YYYY-MM-DD');
+
+			const todayDraw: DailyDraw = await getRepository(DailyDraw).findOne(
+				{
+					where: { drawDate: today },
+				}
+			);
+
+			console.log(today, ' today');
+
+			if (!todayDraw)
+				throw new BadRequestException(errorMessage.dailyDrawNotFound);
+
+			const { id, prizeId } = todayDraw;
+
+			const todayMoment = moment().subtract(1, 'days');
+			const startOfPreviousWeek = todayMoment
+				.startOf('isoWeek')
+				.format('YYYY-MM-DD');
+
+			const endOfPreviousWeek = todayMoment
+				.endOf('isoWeek')
+				.format('YYYY-MM-DD');
+
+			const userDrawQualifications: UserDrawQualification[] = await getRepository(
+				UserDrawQualification
+			).query(`
+				SELECT user_id, daily_draw_id, id
+				FROM user_draw_qualifications
+				WHERE date(created_at) >= '${startOfPreviousWeek}' and date(created_at) <= '${endOfPreviousWeek}'
+				GROUP BY user_id HAVING count(*) >= 3
+			`);
 
 			if (userDrawQualifications.length === 0) {
 				return getRepository(DailyDraw).save({
