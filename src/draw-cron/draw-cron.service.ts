@@ -244,7 +244,7 @@ export class DrawCronService {
 	}
 
 	@Cron('0 03 * * MON', {
-		name: 'dailyDraw',
+		name: 'weeklyDraw',
 	})
 	async weeklyDraw() {
 		try {
