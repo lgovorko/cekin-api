@@ -39,13 +39,6 @@ export class DailyDraw {
 	})
 	drawDate: string;
 
-	@Column({
-		type: 'varchar',
-		name: 'draw_date',
-		nullable: true,
-	})
-	interval: string;
-
 	@UpdateDateColumn({ type: 'timestamp with time zone', name: 'updated_at' })
 	updatedAt: string;
 
