@@ -23,6 +23,7 @@ import { PaginationI } from '../shared/interfaces';
 import { Prize } from '../prizes/entities/prizes.entity';
 import { SettingsService } from '../settings/settings.service';
 import { PrizeStatusE } from '../prizes/enum';
+import { DrawType } from './enum/draw-type.enum';
 
 @Injectable()
 export class DailyDrawsService extends TypeOrmCrudService<DailyDraw> {
@@ -81,6 +82,7 @@ export class DailyDrawsService extends TypeOrmCrudService<DailyDraw> {
 		const draw: DailyDraw = await this.dailyDrawRepository.findOne({
 			where: {
 				drawDate: MoreThanOrEqual(currentDate),
+				type: DrawType.DAILY,
 			},
 			order: {
 				drawDate: 'ASC',
