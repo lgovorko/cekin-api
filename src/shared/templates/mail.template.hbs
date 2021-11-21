@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        a {
+            font-size: 24px;
+            line-height: 24px;
+            padding: 16px 32px 12px 32px;
+            font-weight: bold;
+            font-stretch: normal;
+            font-style: normal;
+            line-height: normal;
+            letter-spacing: normal;
+            text-align: center;
+
+            border-radius: 30px;
+            background-image: radial-gradient(circle at 50% 0, #d21220, #ea6c75 47%);
+            outline: none;
+            border: none;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+            filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.4));
+
+            color: white;
+        }
+
+        a,
+        a:hover,
+        a:active,
+        a:visited {
+            color: white;
+            text-decoration: none;
+            font-weight: normal;
+        }
+
+        #container {
+            text-align: center;
+            margin: 5%;
+        }
+
+        .important a:link {
+            color: white;
+        }
+
+        span {
+            font-size: 20px;
+            color: #000;
+        }
+
+        div {
+            margin: 5%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div>
+            <div>
+                <span>
+                    Kako bi koristili web aplikaciju zdravi odabir morate verificirati svoju mail adresi tako što kliknete na gumb verificiraj.
+                </span>
+            </div>
+            <div>
+                <a href="{{verificationRedirectUrl}}"><span style="color: black;">{{ actionText }}</span></a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

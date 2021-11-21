@@ -1,0 +1,53 @@
+image: node:12.18.3
+pipelines:
+  branches:
+    staging:
+      - step:
+          name: 'Vindija Staging'
+          caches:
+            - node
+          script:
+            - npm install
+            - npm run build
+            - echo "$(ls -la dist/src/)"
+          artifacts:
+            - dist/**
+      - step:
+          name: Deploy artifacts using SCP to STAGING
+          deployment: staging
+          script:
+            - pipe: atlassian/scp-deploy:0.3.3
+              variables:
+                USER: $USER
+                SERVER: $SERVER
+                REMOTE_PATH: '/var/www/api.vindija.dings.solutions/docroot/dist/src'
+                LOCAL_PATH: 'dist/*'
+      - step:
+          name: Reload Process Manager
+          script:
+            - ssh -tt admin@78.46.96.25 'pm2 startOrReload /var/www/api.vindija.dings.solutions/docroot/process/process.yaml'
+    production:
+      - step:
+          name: 'Vindija Production'
+          caches:
+            - node
+          script:
+            - npm install
+            - npm run build
+            - echo "$(ls -la dist/src/)"
+          artifacts:
+            - dist/**
+      - step:
+          name: Deploy artifacts using SCP to Production
+          deployment: staging
+          script:
+            - pipe: atlassian/scp-deploy:0.3.3
+              variables:
+                USER: $USER
+                SERVER: $SERVER
+                REMOTE_PATH: '/var/www/api.zdraviodabir.hr/docroot/dist/src'
+                LOCAL_PATH: 'dist/*'
+      - step:
+          name: Reload Process Manager
+          script:
+            - ssh -tt admin@78.46.96.25 'pm2 reload /var/www/api.zdraviodabir.hr/docroot/process/process.yaml'

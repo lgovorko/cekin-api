@@ -1,0 +1,23 @@
+apps:
+ - script: /home/antonio/projects/node-projects/projects/cekin-api/dist/src/main.js
+   name: 'Cekin Development'
+   env:
+     NODE_ENV: development
+     DB_USERNAME: root
+     DB_PASSWORD: example
+     DB_NAME: cekin_development_api
+     DB_HOST: localhost
+     PORT: 3047
+     JWT_SECRET: 56effaa38a4b2fa3eea0a8900cc0bd5de404aae825321714f8afc989fd18873866942a8d03ec7c0c9ea864f00ca890bf17b2878ab29360acb065865093da7df6    
+     ROOT_PATH: /home/antonio/projects/node-projects/projects/cekin-api
+     SENDGRID_API_KEY: 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
+     BASE_API_URL: https://api.zdraviodabir.hr/api
+     REDIS_HOST: localhost
+     REDIS_PORT: 6379
+     REDIS_DB: 15
+     REDIS_CLIENT_NAME: tetrapak_vindija
+     PATH_TEMPLATE: /home/antonio/projects/node-projects/projects/cekin-api/src/shared/templates
+     DOMAIN: https://api.zdraviodabir.hr
+     MAIL_TEMPLATE_SVG_LOGO: /zdravi-odabir-logo-potpis.svg
+     MAIL_TEMPLATE_SVG: /zdravi-odabir.svg
+     AES_KEY: 385d58dfeb3c09e56ad22dd9906503019812175c0ea8c2e25462c1b1a7f6f3bb146355d06d10acb6d673d120f4e9b30490cdb6fbae17d1cc75574c4679f7b66725f279cf523b55e780a36016753ffb147ec30eee333f14dfb79f60401d5a452a6c3b07748539acdaeb8ea1a3785e3bb460bf891d109126bf0170786e7ce455dc
