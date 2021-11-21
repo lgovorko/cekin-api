@@ -13,6 +13,7 @@ import { DailyDrawStatusE } from '../enum/daily-draw-status.enum';
 import { Prize } from '../../prizes/entities/prizes.entity';
 import { UserDrawQualification } from '../../user-draw-qualifications/entities/user-draw-qualifications.entity';
 import { DrawWinner } from '../../draw-winners/entities/draw-winners.entity';
+import { DrawType } from '../enum/draw-type.enum';
 
 @Entity()
 export class DailyDraw {
@@ -38,6 +39,13 @@ export class DailyDraw {
 		name: 'draw_date',
 	})
 	drawDate: string;
+
+	@Column({
+		type: 'varchar',
+		name: 'type',
+		default: DrawType.DAILY,
+	})
+	type: string;
 
 	@UpdateDateColumn({ type: 'timestamp with time zone', name: 'updated_at' })
 	updatedAt: string;
