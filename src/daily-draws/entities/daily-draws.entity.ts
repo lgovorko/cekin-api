@@ -33,7 +33,6 @@ export class DailyDraw {
 	})
 	status: number;
 
-	@Index({ unique: true })
 	@Column({
 		type: 'varchar',
 		name: 'draw_date',
