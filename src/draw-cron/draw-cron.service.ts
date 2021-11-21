@@ -157,7 +157,7 @@ export class DrawCronService {
 		};
 	}
 
-	@Cron('* * * * *', {
+	@Cron('59 23 * * *', {
 		name: 'dailyDraw',
 	})
 	async dailyDraw() {
@@ -197,7 +197,6 @@ export class DrawCronService {
 			);
 
 			const { userDrawQualificationId, userId, dailyDrawId } = winner;
-			console.log(winner, 'winner');
 
 			return getConnection().transaction(async trx => {
 				const prize: Prize = await trx.findOne(Prize, prizeId);
