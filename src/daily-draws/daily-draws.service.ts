@@ -65,6 +65,7 @@ export class DailyDrawsService extends TypeOrmCrudService<DailyDraw> {
 		const query: FindOneOptions<DailyDraw> = {
 			where: {
 				drawDate: MoreThanOrEqual(currentDate),
+				type: DrawType.DAILY,
 			},
 			order: {
 				drawDate: 'ASC',
