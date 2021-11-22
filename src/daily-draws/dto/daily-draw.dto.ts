@@ -3,45 +3,48 @@ import { Type } from 'class-transformer';
 import { DrawWinnersEmbeddedDTO } from '../../draw-winners/dto';
 
 export class DailyDrawDTO {
-  @ApiProperty()
-  id: number;
+	@ApiProperty()
+	id: number;
 
-  @ApiProperty()
-  prizeId: number;
+	@ApiProperty()
+	prizeId: number;
 
-  @ApiProperty()
-  status: number;
+	@ApiProperty()
+	status: number;
 
-  @ApiProperty()
-  drawDate: string;
+	@ApiProperty()
+	type: number;
 
-  @ApiProperty()
-  updatedAt: string;
+	@ApiProperty()
+	drawDate: string;
 
-  @ApiProperty()
-  createdAt: string;
+	@ApiProperty()
+	updatedAt: string;
+
+	@ApiProperty()
+	createdAt: string;
 }
 
 export class DailyDrawEmbeddedDTO {
-  @ApiProperty()
-  id: number;
+	@ApiProperty()
+	id: number;
 
-  @ApiProperty()
-  prizeId: number;
+	@ApiProperty()
+	prizeId: number;
 
-  @ApiProperty()
-  status: number;
+	@ApiProperty()
+	status: number;
 
-  @ApiProperty()
-  drawDate: string;
+	@ApiProperty()
+	drawDate: string;
 
-  @ApiProperty()
-  updatedAt: string;
+	@ApiProperty()
+	updatedAt: string;
 
-  @ApiProperty()
-  createdAt: string;
+	@ApiProperty()
+	createdAt: string;
 
-  @ApiProperty()
-  @Type(() => DrawWinnersEmbeddedDTO)
-  drawWinnersEmbeddedDTO: DrawWinnersEmbeddedDTO;
+	@ApiProperty()
+	@Type(() => DrawWinnersEmbeddedDTO)
+	drawWinnersEmbeddedDTO: DrawWinnersEmbeddedDTO;
 }

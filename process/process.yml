@@ -8,7 +8,7 @@ apps:
      DB_NAME: cekin_development_api
      DB_HOST: localhost
      PORT: 3047
-     JWT_SECRET: 56effaa38a4b2fa3eea0a8900cc0bd5de404aae825321714f8afc989fd18873866942a8d03ec7c0c9ea864f00ca890bf17b2878ab29360acb065865093da7df6    
+     JWT_SECRET: 56effaa38a4b2fa3eea0a8900cc0bd5de404aae825321714f8afc989fd18873866942a8d03ec7c0c9ea864f00ca890bf17b2878ab29360acb065865093da7df61111
      ROOT_PATH: /home/antonio/projects/node-projects/projects/cekin-api
      SENDGRID_API_KEY: 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
      BASE_API_URL: https://api.zdraviodabir.hr/api

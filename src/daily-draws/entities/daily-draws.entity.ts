@@ -40,11 +40,11 @@ export class DailyDraw {
 	drawDate: string;
 
 	@Column({
-		type: 'varchar',
+		type: 'int',
 		name: 'type',
 		default: DrawType.DAILY,
 	})
-	type: string;
+	type: number;
 
 	@UpdateDateColumn({ type: 'timestamp with time zone', name: 'updated_at' })
 	updatedAt: string;
