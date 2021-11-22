@@ -355,7 +355,7 @@ export class DrawCronService {
 			});
 
 			const qualifiedUsers = await getConnection().query(
-				`SELECT user_id, COUNT(*) as total FROM user_draw_qualifications WHERE type in (${CodeTypeE.BEZ_LAKTOZE}, ${CodeTypeE.D_VITAMIN}, ${CodeTypeE.KOZJE}) GROUP BY user_id HAVING COUNT(*) >= 10;`
+				`SELECT user_id, COUNT(*) as total FROM user_draw_qualifications WHERE type in (${CodeTypeE.GAVELINO}, ${CodeTypeE.CEKIN}) GROUP BY user_id HAVING COUNT(*) >= 10;`
 			);
 
 			const qualifiedUsersId: number[] = qualifiedUsers.map(

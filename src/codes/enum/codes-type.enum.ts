@@ -1,6 +1,5 @@
 export enum CodeTypeE {
-  KOZJE = 1,
-  D_VITAMIN = 2,
-  BEZ_LAKTOZE = 3,
-  POLL_QUALIFICATION = 4,
+	GAVELINO = 1,
+	CEKIN = 2,
+	POLL_QUALIFICATION = 3,
 }
