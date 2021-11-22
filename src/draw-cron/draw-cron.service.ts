@@ -21,6 +21,7 @@ import { SettingsService } from '../settings/settings.service';
 import { LoggerService } from '../logger/logger.service';
 import { PrizeTypeE } from '../prizes/enum';
 import { CodeTypeE } from '../codes/enum';
+import { DrawType } from 'src/daily-draws/enum/draw-type.enum';
 
 @Injectable()
 export class DrawCronService {
@@ -166,11 +167,11 @@ export class DrawCronService {
 
 			const todayDraw: DailyDraw = await getRepository(DailyDraw).findOne(
 				{
-					where: { drawDate: today },
+					where: { drawDate: today, type: DrawType.DAILY },
 				}
 			);
 
-			console.log(today, ' today');
+			console.log(today, todayDraw, ' today');
 
 			if (!todayDraw)
 				throw new BadRequestException(errorMessage.dailyDrawNotFound);
@@ -252,11 +253,11 @@ export class DrawCronService {
 
 			const todayDraw: DailyDraw = await getRepository(DailyDraw).findOne(
 				{
-					where: { drawDate: today },
+					where: { drawDate: today, type: DrawType.WEEKLY },
 				}
 			);
 
-			console.log(today, ' today');
+			console.log(today, todayDraw, ' today');
 
 			if (!todayDraw)
 				throw new BadRequestException(errorMessage.dailyDrawNotFound);
