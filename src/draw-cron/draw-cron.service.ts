@@ -21,7 +21,7 @@ import { SettingsService } from '../settings/settings.service';
 import { LoggerService } from '../logger/logger.service';
 import { PrizeTypeE } from '../prizes/enum';
 import { CodeTypeE } from '../codes/enum';
-import { DrawType } from 'src/daily-draws/enum/draw-type.enum';
+import { DrawType } from '../daily-draws/enum/draw-type.enum';
 
 @Injectable()
 export class DrawCronService {
