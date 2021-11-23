@@ -44,7 +44,7 @@ export class PrizeRepository extends Repository<Prize> {
 			.where(`prize.id=:prizeId`, { prizeId })
 			.orderBy('dailyDraws.drawDate', 'ASC')
 			.getOne();
-		console.log(prize, ' prize');
+
 		if (!prize) return [];
 
 		const { dailyDraws } = prize;
