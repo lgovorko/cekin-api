@@ -48,7 +48,7 @@ export class PrizeRepository extends Repository<Prize> {
 		if (!prize) return [];
 
 		const { dailyDraws } = prize;
-		console.log(dailyDraws, ' dd');
+
 		const filteredRejectedWinners = dailyDraws.map(currentDailyDraw => {
 			const { drawWinner } = currentDailyDraw;
 

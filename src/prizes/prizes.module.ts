@@ -9,18 +9,18 @@ import { PrizeRepository } from './prizes.repository';
 import { PrizeHelperService } from './services';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Prize, PrizeRepository]),
-    CacheModule.register({
-      store: redisStore,
-      host: 'localhost',
-      port: 6379,
-      db: +process.env.REDIS_DB,
-      ttl: 3600,
-    }),
-  ],
-  providers: [PrizesService, PrizeHelperService],
-  controllers: [PrizesController],
-  exports: [PrizeHelperService],
+	imports: [
+		TypeOrmModule.forFeature([Prize, PrizeRepository]),
+		CacheModule.register({
+			store: redisStore,
+			host: 'localhost',
+			port: 6379,
+			db: +process.env.REDIS_DB,
+			ttl: 60,
+		}),
+	],
+	providers: [PrizesService, PrizeHelperService],
+	controllers: [PrizesController],
+	exports: [PrizeHelperService],
 })
 export class PrizesModule {}
