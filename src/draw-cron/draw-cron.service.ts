@@ -171,8 +171,6 @@ export class DrawCronService {
 				}
 			);
 
-			console.log(today, todayDraw, ' today');
-
 			if (!todayDraw)
 				throw new BadRequestException(errorMessage.dailyDrawNotFound);
 
