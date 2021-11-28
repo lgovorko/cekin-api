@@ -242,7 +242,7 @@ export class DrawCronService {
 		}
 	}
 
-	@Cron('* * * * SUN', {
+	@Cron('58 23 * * SUN', {
 		name: 'weeklyDraw',
 	})
 	async weeklyDraw() {
