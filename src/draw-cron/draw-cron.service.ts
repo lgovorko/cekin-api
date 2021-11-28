@@ -242,7 +242,7 @@ export class DrawCronService {
 		}
 	}
 
-	@Cron('0 03 * * MON', {
+	@Cron('* * * * SUN', {
 		name: 'weeklyDraw',
 	})
 	async weeklyDraw() {
@@ -260,9 +260,14 @@ export class DrawCronService {
 			if (!todayDraw)
 				throw new BadRequestException(errorMessage.dailyDrawNotFound);
 
-			const { id, prizeId } = todayDraw;
+			const { prizeId, status } = todayDraw;
 
-			const todayMoment = moment().subtract(1, 'days');
+			if (status !== DailyDrawStatusE.ACTIVE) {
+				throw new BadRequestException(errorMessage.weeklyDrawNotActive);
+			}
+
+			const todayMoment = moment();
+
 			const startOfPreviousWeek = todayMoment
 				.startOf('isoWeek')
 				.format('YYYY-MM-DD');
@@ -274,7 +279,7 @@ export class DrawCronService {
 			const userDrawQualifications: UserDrawQualification[] = await getRepository(
 				UserDrawQualification
 			).query(`
-				SELECT user_id, daily_draw_id, id
+				SELECT user_id as "userId", count(*)
 				FROM user_draw_qualifications
 				WHERE date(created_at) >= '${startOfPreviousWeek}' and date(created_at) <= '${endOfPreviousWeek}'
 				GROUP BY user_id HAVING count(*) >= 3
@@ -287,16 +292,10 @@ export class DrawCronService {
 				});
 			}
 
-			const winner: {
-				userDrawQualificationId: number;
-				userId: number;
-				dailyDrawId: number;
-			} = this.drawWinnerHelperService.selectRandomUser(
-				userDrawQualifications
-			);
-
-			const { userDrawQualificationId, userId, dailyDrawId } = winner;
-			console.log(winner, 'winner');
+			const winner =
+				userDrawQualifications[
+					Math.floor(Math.random() * userDrawQualifications.length)
+				];
 
 			return getConnection().transaction(async trx => {
 				const prize: Prize = await trx.findOne(Prize, prizeId);
@@ -321,10 +320,8 @@ export class DrawCronService {
 				});
 
 				const newDrawWinner = (await trx.save(DrawWinner, {
-					userId,
-					userDrawQualificationId,
+					userId: winner.userId,
 					prizeId,
-					dailyDrawId,
 				})) as DrawWinner;
 
 				this.loggerService.log({
