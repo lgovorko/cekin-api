@@ -321,6 +321,7 @@ export class DrawCronService {
 
 				const newDrawWinner = (await trx.save(DrawWinner, {
 					userId: winner.userId,
+					dailyDrawId: todayDraw.id,
 					prizeId,
 				})) as DrawWinner;
 
