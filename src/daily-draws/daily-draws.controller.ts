@@ -66,8 +66,6 @@ import { PaginationI } from '../shared/interfaces';
 export class DailyDrawsController {
 	constructor(private readonly service: DailyDrawsService) {}
 
-	@Roles('SUPERADMIN', 'ADMIN')
-	@UseGuards(JwtAuthGuard, RoleGuard)
 	@ApiOkResponse({ type: [DailyDrawStatsDTO] })
 	@UseInterceptors(new TransformInterceptor(DailyDrawStatsDTO))
 	@Get('stats/:dailyDrawId')
