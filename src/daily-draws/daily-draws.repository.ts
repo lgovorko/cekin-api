@@ -1,4 +1,5 @@
 import { EntityRepository, Repository } from 'typeorm';
+import * as moment from 'moment';
 
 import { DailyDraw } from './entities/daily-draws.entity';
 import { CustomDailyDrawResponseDTO } from './dto/daily-draws-custom.dto';
@@ -75,5 +76,28 @@ export class DailyDrawRepositry extends Repository<DailyDraw> {
             FROM daily_draw
             WHERE id = ${dailyDrawId};
     `);
+	}
+
+	public async getWeeklyDrawStats(dailyDrawId: number, drawDate: string) {
+		const drawDateMoment = moment(drawDate);
+
+		const startOfPreviousWeek = drawDateMoment
+			.startOf('isoWeek')
+			.format('YYYY-MM-DD');
+
+		const endOfPreviousWeek = drawDateMoment
+			.endOf('isoWeek')
+			.format('YYYY-MM-DD');
+
+		return this.query(`
+		SELECT id, draw_date as drawDate,
+		  COALESCE((SELECT COUNT(*) FROM user_draw_qualifications WHERE type in (${CodeTypeE.GAVELINO},${CodeTypeE.CEKIN}) AND (date(created_at) >= '${startOfPreviousWeek}' and date(created_at) <= '${endOfPreviousWeek}') GROUP BY daily_draw_id), 0)::int as "codeEntry",
+		  COALESCE((SELECT SUM(qualifications_count)  FROM user_draw_qualifications WHERE(date(created_at) >= '${startOfPreviousWeek}' and date(created_at) <= '${endOfPreviousWeek}') GROUP BY daily_draw_id), 0)::int as "drawQualifications",
+		  COALESCE((SELECT COUNT(*) FROM user_draw_qualifications WHERE  extra_spent = true AND (date(created_at) >= '${startOfPreviousWeek}' and date(created_at) <= '${endOfPreviousWeek}') GROUP BY daily_draw_id),0)::int as "quizStarted",
+		  COALESCE((SELECT COUNT(*) FROM user_draw_qualifications WHERE  quiz_finished = true AND (date(created_at) >= '${startOfPreviousWeek}' and date(created_at) <= '${endOfPreviousWeek}') GROUP BY daily_draw_id),0)::int as "quizFinished",
+		  COALESCE((SELECT COUNT(*) FROM user_draw_qualifications WHERE is_shared = true AND (date(created_at) >= '${startOfPreviousWeek}' and date(created_at) <= '${endOfPreviousWeek}') GROUP BY daily_draw_id), 0)::int as "sharedCount"
+		FROM daily_draw
+		WHERE id = ${dailyDrawId};
+`);
 	}
 }

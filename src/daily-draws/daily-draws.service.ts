@@ -36,9 +36,23 @@ export class DailyDrawsService extends TypeOrmCrudService<DailyDraw> {
 	}
 
 	public async getDailyDrawStats(dailyDrawId: number): Promise<any> {
-		const [
-			dailyDrawStat,
-		] = await this.dailyDrawRepository.getDailyDrawStats(dailyDrawId);
+		const dailyDraw = await this.dailyDrawRepository.findOne(dailyDrawId);
+
+		const { type, drawDate } = dailyDraw;
+
+		let dailyDrawStat;
+
+		if (type === DrawType.DAILY) {
+			[dailyDrawStat] = await this.dailyDrawRepository.getDailyDrawStats(
+				dailyDrawId
+			);
+		} else {
+			[dailyDrawStat] = await this.dailyDrawRepository.getWeeklyDrawStats(
+				dailyDrawId,
+				drawDate
+			);
+		}
+
 		if (!dailyDrawStat) return [];
 		return dailyDrawStat;
 	}
