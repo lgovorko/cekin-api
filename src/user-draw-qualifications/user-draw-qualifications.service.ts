@@ -204,7 +204,7 @@ export class UserDrawQualificationsService extends TypeOrmCrudService<
 						userId: usrId,
 						code,
 						userCodeId,
-						type,
+						type: UserDrawQualificationTypeE.CODE,
 						qualificationsCount,
 					}
 				)) as UserDrawQualification;
