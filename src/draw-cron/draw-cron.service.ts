@@ -341,59 +341,62 @@ export class DrawCronService {
 		}
 	}
 
-	// @Cron('10 12 22 12 *', {
-	//   name: 'finalDraw',
-	// })
+	@Cron('50 23 * * *', {
+		name: 'finalDraw',
+	})
 	public async finalDraw() {
 		try {
-			const prize: Prize = await getRepository(Prize).findOne({
+			const prizes: Prize[] = await getRepository(Prize).find({
 				where: { type: PrizeTypeE.MAIN },
 			});
-
+			console.log(prizes, ' prizes');
 			const qualifiedUsers = await getConnection().query(
-				`SELECT user_id, COUNT(*) as total FROM user_draw_qualifications WHERE type in (${CodeTypeE.GAVELINO}, ${CodeTypeE.CEKIN}) GROUP BY user_id HAVING COUNT(*) >= 10;`
+				`SELECT udq.user_id, COUNT(*) as total FROM user_draw_qualifications as udq inner join user_code as uc on udq.user_code_id=uc.id
+				 WHERE udq.type in (${CodeTypeE.GAVELINO}, ${CodeTypeE.CEKIN}) and uc.status = 1 GROUP BY udq.user_id HAVING COUNT(*) >= 10;`
 			);
 
 			const qualifiedUsersId: number[] = qualifiedUsers.map(
 				({ user_id: userId }) => userId
 			);
 
-			const {
-				totalSpent: prizeSpentCount,
-				totalCount: prizeTotalCount,
-				id: prizeId,
-			} = prize;
+			for (let i = 0, len = prizes.length; i < len; i++) {
+				const prize = prizes[i];
 
-			if (prizeSpentCount >= prizeTotalCount)
-				throw new NotFoundException(errorMessage.prizeSpent);
+				const {
+					totalSpent: prizeSpentCount,
+					totalCount: prizeTotalCount,
+					id: prizeId,
+				} = prize;
 
-			const drawWinners = times(prizeTotalCount, () => {
-				const winnerId =
-					qualifiedUsersId[
-						Math.floor(Math.random() * qualifiedUsersId.length)
-					];
+				if (prizeSpentCount >= prizeTotalCount)
+					throw new NotFoundException(errorMessage.prizeSpent);
 
-				const drawWinner = {
-					prizeId,
-					userId: winnerId,
-				};
+				const drawWinners = times(prizeTotalCount, () => {
+					const winnerId =
+						qualifiedUsersId[
+							Math.floor(Math.random() * qualifiedUsersId.length)
+						];
 
-				const index = qualifiedUsersId.indexOf(winnerId);
-				qualifiedUsersId.splice(index, 1);
+					const drawWinner = {
+						prizeId,
+						userId: winnerId,
+					};
 
-				return drawWinner;
-			});
+					const index = qualifiedUsersId.indexOf(winnerId);
+					qualifiedUsersId.splice(index, 1);
 
-			console.log(drawWinners, ' draw winners');
-
-			await getConnection().transaction(async trx => {
-				await trx.save(DrawWinner, drawWinners);
-
-				await trx.save(Prize, {
-					...prize,
-					totalSpent: prizeTotalCount,
+					return drawWinner;
 				});
-			});
+
+				await getConnection().transaction(async trx => {
+					await trx.save(DrawWinner, drawWinners);
+
+					await trx.save(Prize, {
+						...prize,
+						totalSpent: prizeTotalCount,
+					});
+				});
+			}
 
 			this.loggerService.log({
 				userId: 0,
