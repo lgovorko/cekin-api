@@ -158,9 +158,9 @@ export class DrawCronService {
 		};
 	}
 
-	@Cron('59 23 * * *', {
-		name: 'dailyDraw',
-	})
+	// @Cron('59 23 * * *', {
+	// 	name: 'dailyDraw',
+	// })
 	async dailyDraw() {
 		try {
 			const today = moment().format('YYYY-MM-DD');
@@ -242,9 +242,9 @@ export class DrawCronService {
 		}
 	}
 
-	@Cron('58 23 * * SUN', {
-		name: 'weeklyDraw',
-	})
+	// @Cron('58 23 * * SUN', {
+	// 	name: 'weeklyDraw',
+	// })
 	async weeklyDraw() {
 		try {
 			const today = moment().format('YYYY-MM-DD');
@@ -341,9 +341,9 @@ export class DrawCronService {
 		}
 	}
 
-	@Cron('50 23 * * *', {
-		name: 'finalDraw',
-	})
+	// @Cron('50 23 * * *', {
+	// 	name: 'finalDraw',
+	// })
 	public async finalDraw() {
 		try {
 			const prizes: Prize[] = await getRepository(Prize).find({
