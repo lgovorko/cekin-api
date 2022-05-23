@@ -16,8 +16,8 @@ async function bootstrap() {
 	app.enableCors();
 
 	const options = new DocumentBuilder()
-		.setTitle('Tetrapak  Vindija')
-		.setDescription('Tetrapak  Vindija API')
+		.setTitle('Scan the Pulp')
+		.setDescription('Scan the Pulp API')
 		.addTag('api')
 		.build();
 

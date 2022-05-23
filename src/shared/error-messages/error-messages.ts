@@ -56,6 +56,6 @@ export const errorMessage = {
 	gameAlreadyFinished: 'Sesija je završena',
 	mainPrizeNotFound: 'Glavna nagrada nije pronađena',
 	codeEntryDisabled:
-		'NAGRADNA IGRA JE ZAVRŠENA! Hvala ti na interesu i sudjelovanju u nagradnoj igri Zdravi odabir. Svakako nas nastavi pratiti i dalje za buduće nagradne igre. Kad biraš zdravo, uvijek si na dobitku. #SrećaPratiZdrave',
+		'NAGRADNA IGRA JE ZAVRŠENA! Hvala ti na interesu i sudjelovanju u nagradnoj igri Scan the pulp. Svakako nas nastavi pratiti i dalje za buduće nagradne igre.',
 	weeklyDrawNotActive: 'Weekly draw is not active.',
 };
