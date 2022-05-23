@@ -33,7 +33,7 @@ export class Code {
 	@Column({
 		type: 'int',
 		name: 'type',
-		default: () => `${CodeTypeE.GAVELINO}`,
+		default: () => `${CodeTypeE.ORANGINA_S}`,
 	})
 	type: number;
 

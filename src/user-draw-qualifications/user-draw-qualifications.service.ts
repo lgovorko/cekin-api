@@ -37,7 +37,7 @@ import { QualificationBoost } from '../qualification-boost/entities/qualificatio
 
 @Injectable()
 export class UserDrawQualificationsService extends TypeOrmCrudService<
-	UserDrawQualification
+UserDrawQualification
 > {
 	constructor(
 		@InjectRepository(UserDrawQualificationRepository)
@@ -77,7 +77,16 @@ export class UserDrawQualificationsService extends TypeOrmCrudService<
 			{
 				where: {
 					userId,
-					type: In([CodeTypeE.GAVELINO, CodeTypeE.CEKIN]),
+					type: In([
+						CodeTypeE.ORANGINA_L,
+						CodeTypeE.ORANGINA_M,
+						CodeTypeE.ORANGINA_S,
+						CodeTypeE.ROUGE_L,
+						CodeTypeE.ROUGE_M,
+						CodeTypeE.ROUGE_S,
+						CodeTypeE.ZERO_L,
+						CodeTypeE.ZERO_M
+					]),
 				},
 			}
 		);

@@ -65,10 +65,23 @@ export class WeeklySummaryDataDTO {
 	duplicateCodes: number;
 
 	@ApiProperty()
-	gavelino: number;
+	orangina_s: number;
+	@ApiProperty()
+	orangina_m: number;
+	@ApiProperty()
+	orangina_l: number;
 
 	@ApiProperty()
-	cekin: number;
+	rouge_s: number;
+	@ApiProperty()
+	rouge_m: number;
+	@ApiProperty()
+	rouge_l: number;
+	
+	@ApiProperty()
+	zero_m: number;
+	@ApiProperty()
+	zero_l: number;
 
 	@ApiProperty()
 	releasedProducts: number;

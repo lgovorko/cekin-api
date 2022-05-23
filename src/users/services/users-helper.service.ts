@@ -30,7 +30,7 @@ export class UserHelperService {
 		const { to, text, subject } = emailPayload;
 
 		const sent = await this.transporter.sendMail({
-			from: 'noreply@cekin.hr',
+			from: 'noreply@scanthepulp.com',
 			to,
 			subject,
 			text,
@@ -46,7 +46,7 @@ export class UserHelperService {
 		const { to, subject, html } = emailPayload;
 
 		const sent = await this.transporter.sendMail({
-			from: 'noreply@cekin.hr',
+			from: 'noreply@scanthepulp.com',
 			to,
 			subject: `${subject}`,
 			html,

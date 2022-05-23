@@ -123,8 +123,14 @@ export class WeeklySummaryService extends TypeOrmCrudService<WeeklySummary> {
 			'valid codes',
 			'Invalid Codes',
 			'Duplicate Codes',
-			'Gavelino',
-			'Cekin',
+			'orangina_s',
+			'orangina_m',
+			'orangina_l',
+			'rouge_s',
+			'rouge_m',
+			'rouge_l',
+			'zero_m',
+			'zero_l',
 			'Released Products',
 			'Pct Products Available',
 			'Pct Products Sold',
@@ -235,17 +241,50 @@ export class WeeklySummaryService extends TypeOrmCrudService<WeeklySummary> {
 
 		return usedCodes.reduce(
 			(prev, curr) => {
-				prev.gavelino =
-					curr.type === CodeTypeE.GAVELINO
+				prev.orangina_s =
+					curr.type === CodeTypeE.ORANGINA_S
 						? curr.total
-						: prev.gavelino;
-				prev.cekin =
-					curr.type === CodeTypeE.CEKIN ? curr.total : prev.cekin;
+						: prev.orangina_s;
+				prev.orangina_m =
+					curr.type === CodeTypeE.ORANGINA_M
+						? curr.total
+						: prev.orangina_m;
+				prev.orangina_l =
+					curr.type === CodeTypeE.ORANGINA_L
+						? curr.total
+						: prev.orangina_l;
+				prev.rouge_s =
+					curr.type === CodeTypeE.ROUGE_S
+						? curr.total
+						: prev.rouge_s;
+				prev.rouge_m =
+					curr.type === CodeTypeE.ROUGE_M
+						? curr.total
+						: prev.rouge_m;
+				prev.rouge_l =
+					curr.type === CodeTypeE.ROUGE_L
+						? curr.total
+						: prev.rouge_l;
+				prev.zero_m =
+					curr.type === CodeTypeE.ZERO_M
+						? curr.total
+						: prev.zero_m;
+				prev.zero_l =
+					curr.type === CodeTypeE.ZERO_L
+						? curr.total
+						: prev.zero_l;
+				
 				return prev;
 			},
 			{
-				gavelino: 0,
-				cekin: 0,
+				orangina_s: 0,
+				orangina_m: 0,
+				orangina_l: 0,
+				rouge_s: 0,
+				rouge_m: 0,
+				rouge_l: 0,
+				zero_m: 0,
+				zero_l: 0,
 			}
 		);
 	}

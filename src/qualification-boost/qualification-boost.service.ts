@@ -15,7 +15,7 @@ import { QualificationBoostRepository } from './qualification-boost.repository';
 
 @Injectable()
 export class QualificationBoostService extends TypeOrmCrudService<
-	QualificationBoost
+QualificationBoost
 > {
 	constructor(
 		@InjectRepository(QualificationBoost)
@@ -70,7 +70,16 @@ export class QualificationBoostService extends TypeOrmCrudService<
 
 	private contains(arr: string[]) {
 		const indexArray = arr.map(currentValue =>
-			[CodeTypeE.GAVELINO, CodeTypeE.CEKIN].indexOf(+currentValue)
+			[
+				CodeTypeE.ORANGINA_L,
+				CodeTypeE.ORANGINA_M,
+				CodeTypeE.ORANGINA_S,
+				CodeTypeE.ROUGE_L,
+				CodeTypeE.ROUGE_M,
+				CodeTypeE.ROUGE_S,
+				CodeTypeE.ZERO_L,
+				CodeTypeE.ZERO_M
+			].indexOf(+currentValue)
 		);
 		return indexArray.indexOf(-1) === -1;
 	}

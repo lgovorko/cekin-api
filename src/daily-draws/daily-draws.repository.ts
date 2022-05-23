@@ -68,7 +68,7 @@ export class DailyDrawRepositry extends Repository<DailyDraw> {
 	public async getDailyDrawStats(dailyDrawId: number): Promise<any> {
 		return this.query(`
             SELECT id, draw_date as drawDate,
-              COALESCE((SELECT COUNT(*) FROM user_draw_qualifications WHERE daily_draw_id = ${dailyDrawId} AND type in (${CodeTypeE.GAVELINO},${CodeTypeE.CEKIN}) GROUP BY daily_draw_id), 0)::int as "codeEntry",
+              COALESCE((SELECT COUNT(*) FROM user_draw_qualifications WHERE daily_draw_id = ${dailyDrawId} AND type in (${CodeTypeE.ORANGINA_L},${CodeTypeE.ORANGINA_M},${CodeTypeE.ORANGINA_S},${CodeTypeE.ROUGE_L},${CodeTypeE.ROUGE_M},${CodeTypeE.ROUGE_S},${CodeTypeE.ZERO_L},${CodeTypeE.ZERO_M}) GROUP BY daily_draw_id), 0)::int as "codeEntry",
               COALESCE((SELECT SUM(qualifications_count)  FROM user_draw_qualifications WHERE daily_draw_id = ${dailyDrawId} GROUP BY daily_draw_id), 0)::int as "drawQualifications",
               COALESCE((SELECT COUNT(*) FROM user_draw_qualifications WHERE daily_draw_id = ${dailyDrawId} AND extra_spent = true GROUP BY daily_draw_id),0)::int as "quizStarted",
               COALESCE((SELECT COUNT(*) FROM user_draw_qualifications WHERE daily_draw_id = ${dailyDrawId} AND quiz_finished = true GROUP BY daily_draw_id),0)::int as "quizFinished",
@@ -91,7 +91,7 @@ export class DailyDrawRepositry extends Repository<DailyDraw> {
 		console.log(startOfPreviousWeek, endOfPreviousWeek, ' end');
 		return this.query(`
 		SELECT id, draw_date as drawDate,
-		  COALESCE((SELECT COUNT(*) FROM user_draw_qualifications WHERE  type in (${CodeTypeE.GAVELINO},${CodeTypeE.CEKIN}) AND (date(created_at) >= '${startOfPreviousWeek}' and date(created_at) <= '${endOfPreviousWeek}') ), 0)::int as "codeEntry",
+		  COALESCE((SELECT COUNT(*) FROM user_draw_qualifications WHERE  type in (${CodeTypeE.ORANGINA_L},${CodeTypeE.ORANGINA_M},${CodeTypeE.ORANGINA_S},${CodeTypeE.ROUGE_L},${CodeTypeE.ROUGE_M},${CodeTypeE.ROUGE_S},${CodeTypeE.ZERO_L},${CodeTypeE.ZERO_M}) AND (date(created_at) >= '${startOfPreviousWeek}' and date(created_at) <= '${endOfPreviousWeek}') ), 0)::int as "codeEntry",
 		  COALESCE((SELECT SUM(qualifications_count)  FROM user_draw_qualifications WHERE  (date(created_at) >= '${startOfPreviousWeek}' and date(created_at) <= '${endOfPreviousWeek}') ), 0)::int as "drawQualifications",
 		  COALESCE((SELECT COUNT(*) FROM user_draw_qualifications WHERE  extra_spent = true AND (date(created_at) >= '${startOfPreviousWeek}' and date(created_at) <= '${endOfPreviousWeek}')),0)::int as "quizStarted",
 		  COALESCE((SELECT COUNT(*) FROM user_draw_qualifications WHERE quiz_finished = true AND (date(created_at) >= '${startOfPreviousWeek}' and date(created_at) <= '${endOfPreviousWeek}')),0)::int as "quizFinished",
