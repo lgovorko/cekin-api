@@ -8,7 +8,7 @@ export const postgresConfig: TypeOrmModuleOptions = {
 	password: `${process.env.DB_PASSWORD}`,
 	database: `${process.env.DB_NAME}`,
 	entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-	synchronize: true,
+	synchronize: false,
 	logger: 'debug',
 	keepConnectionAlive: true,
 };
