@@ -78,14 +78,15 @@ UserDrawQualification
 				where: {
 					userId,
 					type: In([
-						CodeTypeE.ORANGINA_L,
+						/* CodeTypeE.ORANGINA_L,
 						CodeTypeE.ORANGINA_M,
 						CodeTypeE.ORANGINA_S,
 						CodeTypeE.ROUGE_L,
 						CodeTypeE.ROUGE_M,
 						CodeTypeE.ROUGE_S,
 						CodeTypeE.ZERO_L,
-						CodeTypeE.ZERO_M
+						CodeTypeE.ZERO_M */
+						UserDrawQualificationTypeE.CODE
 					]),
 				},
 			}
