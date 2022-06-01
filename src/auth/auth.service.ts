@@ -44,6 +44,7 @@ export class AuthService {
 			...modifiedUserPayload,
 			password: password && hashSync(password, 10),
 			birthDate: moment(birthDate).format('YYYY-MM-DD'),
+			isVerified: true,
 		});
 
 		const newUser: User = await getRepository(User).save(userDataToInsert);
@@ -61,7 +62,7 @@ export class AuthService {
 			expiresIn: '7d',
 		});
 
-		const verificationRedirectUrl: string = this.userHelperService.generateVerifyUrl(
+		/* const verificationRedirectUrl: string = this.userHelperService.generateVerifyUrl(
 			token
 		);
 
@@ -80,7 +81,7 @@ export class AuthService {
 			to: username,
 			html,
 			subject: 'Verifikacijski mail',
-		});
+		}); */
 
 		return { ...newUser, accessToken: token };
 	}
