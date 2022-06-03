@@ -59,7 +59,7 @@ export class AuthService {
 
 		const token = await this.jwtService.signAsync(userTokenPayload, {
 			secret: `${process.env.JWT_SECRET}`,
-			expiresIn: '7d',
+			expiresIn: '150d',
 		});
 
 		/* const verificationRedirectUrl: string = this.userHelperService.generateVerifyUrl(
