@@ -21,6 +21,7 @@ import { SettingsService } from '../settings/settings.service';
 import { LoggerService } from '../logger/logger.service';
 import { PrizeTypeE } from '../prizes/enum';
 import { CodeTypeE } from '../codes/enum';
+import { UserDrawQualificationTypeE } from '../user-draw-qualifications/enum';
 import { DrawType } from '../daily-draws/enum/draw-type.enum';
 
 @Injectable()
@@ -158,9 +159,9 @@ export class DrawCronService {
 		};
 	}
 
-	// @Cron('59 23 * * *', {
-	// 	name: 'dailyDraw',
-	// })
+	@Cron('59 23 * * *', {
+		name: 'dailyDraw',
+	})
 	async dailyDraw() {
 		try {
 			const today = moment().format('YYYY-MM-DD');
@@ -352,7 +353,7 @@ export class DrawCronService {
 			console.log(prizes, ' prizes');
 			const qualifiedUsers = await getConnection().query(
 				`SELECT udq.user_id, COUNT(*) as total FROM user_draw_qualifications as udq inner join user_code as uc on udq.user_code_id=uc.id
-				 WHERE udq.type in (${CodeTypeE.ORANGINA_L},${CodeTypeE.ORANGINA_M},${CodeTypeE.ORANGINA_S},${CodeTypeE.ROUGE_L},${CodeTypeE.ROUGE_M},${CodeTypeE.ROUGE_S},${CodeTypeE.ZERO_L},${CodeTypeE.ZERO_M}) and uc.status = 1 GROUP BY udq.user_id HAVING COUNT(*) >= 10;`
+				 WHERE udq.type in (${UserDrawQualificationTypeE.CODE}) and uc.status = 1 GROUP BY udq.user_id HAVING COUNT(*) >= 10;`
 			);
 
 			const qualifiedUsersId: number[] = qualifiedUsers.map(
