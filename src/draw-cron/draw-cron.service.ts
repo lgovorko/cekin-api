@@ -342,9 +342,9 @@ export class DrawCronService {
 		}
 	}
 
-	// @Cron('50 23 * * *', {
-	// 	name: 'finalDraw',
-	// })
+	@Cron('58 23 * * *', {
+		name: 'finalDraw',
+	})
 	public async finalDraw() {
 		try {
 			const prizes: Prize[] = await getRepository(Prize).find({
