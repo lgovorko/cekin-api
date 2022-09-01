@@ -342,7 +342,7 @@ export class DrawCronService {
 		}
 	}
 
-	@Cron('58 23 * * *', {
+	@Cron('15 14 * * *', {
 		name: 'finalDraw',
 	})
 	public async finalDraw() {
