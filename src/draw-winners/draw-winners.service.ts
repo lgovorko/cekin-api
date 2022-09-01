@@ -8,7 +8,7 @@ import { DrawWinner } from './entities/draw-winners.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DrawWinnerRepository } from './draw-winners.repository';
 import { errorMessage } from '../shared/error-messages/error-messages';
-import { getConnection, getRepository } from 'typeorm';
+import { getConnection, getRepository, In } from 'typeorm';
 import { DrawWinnerStatusE } from './enum/draw-winners.enum';
 import { UserDrawQualification } from '../user-draw-qualifications/entities/user-draw-qualifications.entity';
 import { DrawWinnerHelperService } from './services/draw-winners-helpers.service';
@@ -26,18 +26,20 @@ export class DrawWinnersService extends TypeOrmCrudService<DrawWinner> {
 	}
 
 	public async getFinalDrawWinners(): Promise<DrawWinner[]> {
-		const mainPrize: Prize = await getRepository(Prize).findOne({
+		const mainPrizes: Prize[] = await getRepository(Prize).find({
 			where: { type: PrizeTypeE.MAIN },
 		});
 
-		if (!mainPrize)
+		if (!mainPrizes.length)
 			throw new NotFoundException(errorMessage.mainPrizeNotFound);
 
-		const { id: prizeId } = mainPrize;
+		const prizeIds: number[] = mainPrizes.map(
+			({ id:  prizeId }) => prizeId
+		);
 
 		return this.drawWinnerRepository.find({
 			relations: ['prize', 'user'],
-			where: { prizeId, status: DrawWinnerStatusE.CONFIRMED },
+			where: { prizeId: In(prizeIds), status: DrawWinnerStatusE.CONFIRMED },
 		});
 	}
 
